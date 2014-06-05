@@ -51,7 +51,7 @@ define(
             var domRoot = document.createElement('div');
             this._domRoot = domRoot;
 
-            domRoot.onselectstart = returnFalse; // 避免页面选中的尴尬
+            //domRoot.onselectstart = returnFalse; // 避免页面选中的尴尬
             domRoot.style.position = 'relative';
             domRoot.style.overflow = 'hidden';
             domRoot.style.width = this._width + 'px';
@@ -98,7 +98,7 @@ define(
             domRoot.appendChild(canvasElem);
             this._domList.hover = canvasElem;
             vmlCanvasManager && vmlCanvasManager.initElement(canvasElem);
-
+            this._domList.hover.onselectstart = returnFalse;
             this._ctxList.hover = canvasCtx = canvasElem.getContext('2d');
             if (devicePixelRatio != 1) {
                 canvasCtx.scale(devicePixelRatio, devicePixelRatio);
@@ -333,6 +333,9 @@ define(
          * 清除单独的一个层
          */
         Painter.prototype.clearLayer = function (k) {
+            if (!this._ctxList[k]) {
+                return;
+            }
             var zLevelConfigK = this._zLevelConfig[k];
 
             if (zLevelConfigK) {
